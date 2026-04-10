@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Data & Models (Optional: hide if files are too big)
+*.csv
+*.zip
+archive/
+
+# Django
+db.sqlite3

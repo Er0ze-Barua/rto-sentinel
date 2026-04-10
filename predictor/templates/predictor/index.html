@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTO Sentinel | Deep Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nights: #02182B;
+            --pod-bg: #05263D;
+            --crimson: #D7263D;
+            --glass-border: rgba(16, 69, 107, 0.6);
+            --text-dim: #9AB8D1;
+        }
+
+        body {
+            background-color: var(--nights);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(1, 14, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--crimson);
+            padding: 1.2rem 0;
+        }
+
+        .main-heading {
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #FFFFFF;
+            text-shadow: 0 0 15px rgba(215, 38, 61, 0.3);
+        }
+
+        /* The Control Pod Concept */
+        .input-pod {
+            background: var(--pod-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            cursor: text;
+        }
+
+        .input-pod:hover, .input-pod:focus-within {
+            border-color: var(--crimson);
+            box-shadow: 0 0 20px rgba(215, 38, 61, 0.2);
+            transform: translateY(-3px);
+            background: #07314d;
+        }
+
+        .pod-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--crimson);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .pod-input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            width: 100%;
+            outline: none;
+        }
+
+        /* Removes arrows from number inputs */
+        .pod-input::-webkit-inner-spin-button, 
+        .pod-input::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        .btn-scan {
+            background: var(--crimson);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            padding: 1.4rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(215, 38, 61, 0.4);
+            margin-top: 1rem;
+        }
+
+        .btn-scan:hover {
+            background: #ff2b47;
+            transform: scale(1.01);
+            box-shadow: 0 10px 35px rgba(215, 38, 61, 0.6);
+        }
+
+        /* Report Box Styling */
+        .result-card {
+            background: linear-gradient(145deg, #082F4D, #02182B);
+            border: 1px solid var(--glass-border);
+            border-left: 6px solid var(--crimson);
+            border-radius: 16px;
+            height: 100%;
+        }
+
+        .risk-value {
+            font-weight: 800;
+            font-size: 3.5rem;
+            color: #FFFFFF;
+            margin: 0;
+        }
+
+        .badge-rto {
+            padding: 0.8em 1.5em;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar mb-5">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1 text-white">RTO <span style="color:var(--crimson)">SENTINEL</span></span>
+    </div>
+</nav>
+
+<div class="container pb-5">
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <h3 class="main-heading mb-4">ANALYZE TRANSACTION</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="input-pod">
+                            <span class="pod-label">Registration Failures</span>
+                            <input type="number" name="reg_fail" class="pod-input" value="0">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-pod">
+                            <span class="pod-label">Transaction Failed (0/1)</span>
+                            <input type="number" name="trans_fail" class="pod-input" value="0">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-pod">
+                            <span class="pod-label">Total Trans.</span>
+                            <input type="number" name="n_trans" class="pod-input" value="1">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-pod">
+                            <span class="pod-label">Total Orders</span>
+                            <input type="number" name="n_orders" class="pod-input" value="1">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-pod">
+                            <span class="pod-label">Amount (₹)</span>
+                            <input type="number" step="0.01" name="amount" class="pod-input" value="45.00">
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="pm_type" value="1">
+                    <input type="hidden" name="pm_provider" value="2">
+                    <input type="hidden" name="order_state" value="1">
+                    <input type="hidden" name="n_payments" value="1">
+
+                    <div class="col-12">
+                        <button type="submit" class="btn-scan w-100">EXECUTE SCAN</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-5">
+            {% if result %}
+                <div class="result-card p-4 shadow-lg">
+                    <h5 class="pod-label mb-3">Analysis Report</h5>
+                    <hr style="border-color: var(--glass-border);">
+                    
+                    {% if result.error %}
+                        <div class="alert alert-danger bg-dark border-danger text-danger">
+                            {{ result.error }}
+                        </div>
+                    {% else %}
+                        <div class="mb-4">
+                            <p class="text-dim small mb-2">Verdict</p>
+                            <span class="badge badge-rto {% if result.is_rto_risk %}bg-danger{% else %}bg-success{% endif %}">
+                                {% if result.is_rto_risk %}HIGH RISK DETECTED{% else %}SECURE TRANSACTION{% endif %}
+                            </span>
+                        </div>
+                        
+                        <div>
+                            <p class="text-dim small mb-1">Probability Score</p>
+                            <h2 class="risk-value">{{ result.risk_score|floatformat:4 }}</h2>
+                            <div class="progress mt-3" style="height: 6px; background: var(--nights);">
+                                <div class="progress-bar bg-danger" style="width: {{ result.risk_score|add:0 }}%"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="h-100 d-flex align-items-center justify-content-center border-dashed p-5" 
+                     style="border: 2px dashed var(--glass-border); border-radius: 16px;">
+                    <div class="text-center text-muted">
+                        <p class="mb-0">Awaiting input for system analysis...</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
