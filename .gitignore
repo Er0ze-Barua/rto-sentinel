@@ -12,3 +12,17 @@ archive/
 
 # Django
 db.sqlite3
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Model files (IMPORTANT)
+*.pkl
+
+# OS / IDE
+.vscode/
+.DS_Store
+
+# Python envs
+env/
