@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['rto-sentinel-frontend.onrender.com', 'localhost', '127.0.0.1']
 
-
+CSRF_TRUSTED_ORIGINS = ['https://rto-sentinel-frontend.onrender.com']
+DEBUG = False
 # Application definition
 
 INSTALLED_APPS = [
