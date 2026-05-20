@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-*7d&asx9h1haq7)qrl49bqed)0wwb)6c&8%r)8)=ikm*_!fqaq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['rto-sentinel-frontend.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
