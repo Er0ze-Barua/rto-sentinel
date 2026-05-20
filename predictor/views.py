@@ -11,13 +11,13 @@ def rto_check_view(request):
             "transactionAmount": float(request.POST.get('amount',0)),
             "transactionFailed": int(request.POST.get('trans_fail' ,0)) ,
             "orderState": int(request.POST.get('order_state',0)),
-            "No_Transaction": int(request.POST.get('n_trans' ,0)),
+            "No_Transactions": int(request.POST.get('n_trans' ,0)),
             "No_Orders": int(request.POST.get('n_orders',0)),
             "No_Payments": int(request.POST.get('n_payments',0)),
         }
 
         try:
-            response = requests.post("http:127.0.0.1:8000/predict" , json = data)
+            response = requests.post("http://backend:8000/predict" , json = data)
             if response.status_code == 200:
                 result = response.json()
             else:
