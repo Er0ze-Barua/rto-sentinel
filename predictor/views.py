@@ -17,7 +17,9 @@ def rto_check_view(request):
         }
 
         try:
-            response = requests.post("http://backend:8000/predict" , json = data)
+            import os
+            BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000")
+            response = requests.post(f"{BACKEND_URL}/predict", json=data)            
             if response.status_code == 200:
                 result = response.json()
             else:
