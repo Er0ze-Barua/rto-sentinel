@@ -1,8 +1,5 @@
 # RTO Sentinel | AI-Powered Fraud Detection System
 
-## 🚀 Live Demo
-- **Frontend:** https://rto-sentinel-frontend.onrender.com
-- **API (Swagger):** https://rto-sentinel-backend.onrender.com/docs
 
 **RTO Sentinel** is a full-stack Machine Learning application developed to address the **"Return to Origin" (RTO) Risk Detection** problem statement originally open-sourced by Razorpay.
 
